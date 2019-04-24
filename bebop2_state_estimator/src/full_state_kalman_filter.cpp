@@ -42,6 +42,9 @@ Full_State_Kalman_Filter::Full_State_Kalman_Filter(ros::NodeHandle nh, std::stri
     pos_vel_estimated_.setZero();
     euler_rate_estimated_.setZero();
 
+    time_stamp_ = ros::Time::now();
+    time_stamp_previous_ = ros::Time::now();
+
     // discrete time using in the filter, delta_t
     dt_ = 1.0 / node_rate_;
 }
@@ -60,7 +63,7 @@ void Full_State_Kalman_Filter::initializeSubscribers()
 void Full_State_Kalman_Filter::initializePublishers()
 {
     ROS_INFO("Initializing publishers");
-    pub_ = nh_.advertise<nav_msgs::Odometry>(bebop2_pub_topic_, 1, true);
+    pub_ = nh_.advertise<bebop2_msgs::FullStateWithCovarianceStamped>(bebop2_pub_topic_, 1, true);
     ROS_INFO_STREAM(bebop2_pub_topic_);
 }
 
@@ -156,44 +159,84 @@ void Full_State_Kalman_Filter::subscriberCallback(const geometry_msgs::PoseStamp
     pos_vel_cov_estimated_ = (I - K*H) * pos_vel_cov_estimated_;
 
 
-    // TODO: perform Kalman Filtering for the euler angles
+    // perform Kalman Filtering, then for euler angles and their rate
+    // noise matrix
+    double R_euler = 10E-4;
+    R << R_euler, 0, 0,
+         0, R_euler, 0,
+         0, 0, R_euler;
+    double Q_euler = 0.1;
+    double Q_rate  = 1.0;
+    Q << Q_euler, 0, 0, 0, 0, 0,
+         0, Q_euler, 0, 0, 0, 0,
+         0, 0, Q_euler, 0, 0, 0,
+         0, 0, 0, Q_rate, 0, 0,
+         0, 0, 0, 0, Q_rate, 0,
+         0, 0, 0, 0, 0, Q_rate;
+
+    // prediction
+    euler_rate_estimated_ = A*euler_rate_estimated_;
+    euler_rate_cov_estimated_ = A*euler_rate_cov_estimated_*A.transpose() + Q;
+
+    // update
+    Eigen::Vector3d euler_residual;       // euler estimation residual
+    euler_residual = euler_measured_ - H * euler_rate_estimated_;
+    S = H*euler_rate_cov_estimated_*H.transpose() + R;
+    K = (euler_rate_cov_estimated_*H.transpose()) * S.inverse();
+    // new estimated state
+    euler_rate_estimated_ = euler_rate_estimated_ + K*euler_residual;
+    // new covariance
+    euler_rate_cov_estimated_ = (I - K*H) * euler_rate_cov_estimated_;
 
 
     // prepare published message
-    nav_msgs::Odometry msg_pub;                             // published bebop2 state estimation
-    msg_pub.header = msg.header;                            // save the header information
-    // position velocity information
-    msg_pub.pose.pose.position.x = pos_vel_estimated_(0);   // save the estimated position
-    msg_pub.pose.pose.position.y = pos_vel_estimated_(1);
-    msg_pub.pose.pose.position.z = pos_vel_estimated_(2);
-    msg_pub.twist.twist.linear.x = pos_vel_estimated_(3);   // save the estimated velocity
-    msg_pub.twist.twist.linear.y = pos_vel_estimated_(4);
-    msg_pub.twist.twist.linear.z = pos_vel_estimated_(5);
-    // save the estimated position and velocity covariance
+    bebop2_msgs::FullStateWithCovarianceStamped msg_pub;        // published bebop2 full state estimation
+    msg_pub.header = msg.header;                                // save the header information
+    // position
+    msg_pub.state.x = pos_vel_estimated_(0);
+    msg_pub.state.y = pos_vel_estimated_(1);
+    msg_pub.state.z = pos_vel_estimated_(2);
+    // velocity
+    msg_pub.state.x_dot = pos_vel_estimated_(3);
+    msg_pub.state.y_dot = pos_vel_estimated_(4);
+    msg_pub.state.z_dot = pos_vel_estimated_(5);
+    // euler angles
+    msg_pub.state.roll  = euler_rate_estimated_(0);
+    msg_pub.state.pitch = euler_rate_estimated_(1);
+    msg_pub.state.yaw   = euler_rate_estimated_(2);
+    msg_pub.state.roll_dot  = euler_rate_estimated_(3);
+    msg_pub.state.pitch_dot = euler_rate_estimated_(4);
+    msg_pub.state.yaw_dot   = euler_rate_estimated_(5);
     // position covariance
-    msg_pub.pose.covariance[0] = pos_vel_cov_estimated_(0,0);
-    msg_pub.pose.covariance[1] = pos_vel_cov_estimated_(0,1);
-    msg_pub.pose.covariance[2] = pos_vel_cov_estimated_(0,2);
-    msg_pub.pose.covariance[6] = pos_vel_cov_estimated_(1,0);
-    msg_pub.pose.covariance[7] = pos_vel_cov_estimated_(1,1);
-    msg_pub.pose.covariance[8] = pos_vel_cov_estimated_(1,2);
-    msg_pub.pose.covariance[12] = pos_vel_cov_estimated_(2,0);
-    msg_pub.pose.covariance[13] = pos_vel_cov_estimated_(2,1);
-    msg_pub.pose.covariance[14] = pos_vel_cov_estimated_(2,2);
+    msg_pub.state.pos_cov[0] = pos_vel_cov_estimated_(0,0);
+    msg_pub.state.pos_cov[1] = pos_vel_cov_estimated_(0,1);
+    msg_pub.state.pos_cov[2] = pos_vel_cov_estimated_(0,2);
+    msg_pub.state.pos_cov[3] = pos_vel_cov_estimated_(1,0);
+    msg_pub.state.pos_cov[4] = pos_vel_cov_estimated_(1,1);
+    msg_pub.state.pos_cov[5] = pos_vel_cov_estimated_(1,2);
+    msg_pub.state.pos_cov[6] = pos_vel_cov_estimated_(2,0);
+    msg_pub.state.pos_cov[7] = pos_vel_cov_estimated_(2,1);
+    msg_pub.state.pos_cov[8] = pos_vel_cov_estimated_(2,2);
     // velocity covariance
-    msg_pub.twist.covariance[0] = pos_vel_cov_estimated_(3,3);
-    msg_pub.twist.covariance[1] = pos_vel_cov_estimated_(3,4);
-    msg_pub.twist.covariance[2] = pos_vel_cov_estimated_(3,5);
-    msg_pub.twist.covariance[6] = pos_vel_cov_estimated_(4,3);
-    msg_pub.twist.covariance[7] = pos_vel_cov_estimated_(4,4);
-    msg_pub.twist.covariance[8] = pos_vel_cov_estimated_(4,5);
-    msg_pub.twist.covariance[12] = pos_vel_cov_estimated_(5,3);
-    msg_pub.twist.covariance[13] = pos_vel_cov_estimated_(5,4);
-    msg_pub.twist.covariance[14] = pos_vel_cov_estimated_(5,5);
-
-    // orientation information
-    msg_pub.pose.pose.orientation = msg.pose.orientation;   // TODO!         
-
+    msg_pub.state.vel_cov[0] = pos_vel_cov_estimated_(3,3);
+    msg_pub.state.vel_cov[1] = pos_vel_cov_estimated_(3,4);
+    msg_pub.state.vel_cov[2] = pos_vel_cov_estimated_(3,5);
+    msg_pub.state.vel_cov[3] = pos_vel_cov_estimated_(4,3);
+    msg_pub.state.vel_cov[4] = pos_vel_cov_estimated_(4,4);
+    msg_pub.state.vel_cov[5] = pos_vel_cov_estimated_(4,5);
+    msg_pub.state.vel_cov[6] = pos_vel_cov_estimated_(5,3);
+    msg_pub.state.vel_cov[7] = pos_vel_cov_estimated_(5,4);
+    msg_pub.state.vel_cov[8] = pos_vel_cov_estimated_(5,5);
+    // euler angle covariance
+    msg_pub.state.euler_cov[0] = euler_rate_cov_estimated_(0,0);
+    msg_pub.state.euler_cov[1] = euler_rate_cov_estimated_(0,1);
+    msg_pub.state.euler_cov[2] = euler_rate_cov_estimated_(0,2);
+    msg_pub.state.euler_cov[3] = euler_rate_cov_estimated_(1,0);
+    msg_pub.state.euler_cov[4] = euler_rate_cov_estimated_(1,1);
+    msg_pub.state.euler_cov[5] = euler_rate_cov_estimated_(1,2);
+    msg_pub.state.euler_cov[6] = euler_rate_cov_estimated_(2,0);
+    msg_pub.state.euler_cov[7] = euler_rate_cov_estimated_(2,1);
+    msg_pub.state.euler_cov[8] = euler_rate_cov_estimated_(2,2);
 
     // publish the message
     pub_.publish(msg_pub);

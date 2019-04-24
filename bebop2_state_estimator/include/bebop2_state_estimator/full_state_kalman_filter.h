@@ -22,7 +22,7 @@
 #include <nav_msgs/Odometry.h>
 
 // Custom message includes. Auto-generated from msg/ directory.
-
+#include <bebop2_msgs/FullStateWithCovarianceStamped.h>
 
 // Define a class, including a constructor, member variables and member functions
 class Full_State_Kalman_Filter
@@ -60,7 +60,7 @@ private:
     //! Initializations
     void initializeSubscribers();
     void initializePublishers();
-    
+
     //! Subscriber callback
     void subscriberCallback(const geometry_msgs::PoseStamped &msg);
 
