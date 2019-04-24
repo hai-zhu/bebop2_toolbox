@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 2.8.3)
+project(bebop2_msgs)
+
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  std_msgs
+  message_generation
+)
+
+file(GLOB MSGS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/msg msg/*.msg)
+message(STATUS "All msg files: ${MSGS}")
+
+# Generate messages in the 'msg' folder
+add_message_files(
+  DIRECTORY msg
+  FILES
+  ${MSGS}
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
+
+catkin_package(
+  CATKIN_DEPENDS message_runtime std_msgs
+)

@@ -1,0 +1,21 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/hai/ROS/catkin_ws/devel/include",
+        "/home/hai/ROS/devel_ws/devel/include",
+        "/opt/ros/kinetic/include",
+        "/home/hai/ROS/devel_ws/src/bebop2_toolbox/bebop2_msgs/include",
+        "/home/hai/ROS/devel_ws/src/bebop2_toolbox/bebop2_state_estimator/include",
+        "/home/hai/ROS/devel_ws/src/beginner_tutorial/include",
+        "/home/hai/ROS/devel_ws/src/obstacle_estimator/include",
+        "/usr/include"
+      ],
+      "name": "Linux"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package>
+  <name>bebop2_toolbox</name>
+  <version>0.0.1</version>
+  <description>bebop2_toolbox is a toolbox for running simulations and experiments on the Bebop 2 quadrotor</description>
+
+  <maintainer email="h.zhu@tudelft.nl">Hai Zhu</maintainer>
+
+  <license>BSD</license>
+
+  <author email="h.zhu@tudelft.nl">Hai Zhu</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>bebop2_msgs</run_depend>
+  <run_depend>bebop2_state_estimator</run_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>
+
