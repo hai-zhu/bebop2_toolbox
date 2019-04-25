@@ -7,3 +7,4 @@ horizon_N: 30
 bebop2:
       pose_measured: /Bebop1/pose                                 # subscriber topic name
       full_state_estimation: /Bebop1/bebopFullStateEstimation     # publisher topic name
+      position_velocity_orientation_estimation: /Bebop1/bebopPositionVelocityOrientationEstimation

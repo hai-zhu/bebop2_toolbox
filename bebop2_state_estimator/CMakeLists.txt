@@ -45,6 +45,9 @@ include_directories(
 add_executable(full_state_kalman_filter_node nodes/full_state_kalman_filter_node.cpp src/full_state_kalman_filter.cpp)
 target_link_libraries(full_state_kalman_filter_node ${catkin_LIBRARIES})
 
+add_executable(position_velocity_orientation_filter_node nodes/position_velocity_orientation_filter_node.cpp src/position_velocity_orientation_filter.cpp)
+target_link_libraries(position_velocity_orientation_filter_node ${catkin_LIBRARIES})
+
 
 ## For debugging
 set (CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}  -g ")
