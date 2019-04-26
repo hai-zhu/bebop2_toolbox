@@ -46,7 +46,7 @@ Full_State_Kalman_Filter::Full_State_Kalman_Filter(ros::NodeHandle nh, std::stri
     time_stamp_previous_ = ros::Time::now();
 
     // discrete time using in the filter, delta_t
-    dt_ = 1.0 / node_rate_;
+//     dt_ = 1.0 / node_rate_;
 }
 
 
@@ -96,7 +96,7 @@ void Full_State_Kalman_Filter::subscriberCallback(const geometry_msgs::PoseStamp
     time_stamp_      = msg.header.stamp;
 
     // time difference. If using the node_rate to derive, then comment the following lines
-    // dt_ = (time_stamp_ - time_stamp_previous_).toSec();
+    dt_ = (time_stamp_ - time_stamp_previous_).toSec();
 
     // perform Kalman Filtering, first for position and velocity
     // matrix of state transition model
