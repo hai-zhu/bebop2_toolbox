@@ -1,0 +1,15 @@
+<launch>
+
+  <param name="joy/dev" type="string" value="/dev/input/js0" />
+
+  <param name="joy/autorepeat_rate" type="double" value="100" />
+
+  <param name="joy/deadzone" type="double" value="0.05" />
+
+  <node name="joy" pkg="joy" type="joy_node"/>
+
+  <node pkg="bebop2_ground_control" type="ground_control_node" name="ground_controller" output="screen"/>	
+
+  <node pkg="bebop2_linear_mpc" type="bebop2_linear_mpc_node" name="bebop2_linear_mpc" output="screen"/>
+
+</launch>
