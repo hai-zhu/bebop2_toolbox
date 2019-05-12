@@ -78,15 +78,21 @@ void Full_State_Kalman_Filter::subscriberCallback(const geometry_msgs::PoseStamp
     pos_measured_(1) = msg.pose.position.y;
     pos_measured_(2) = msg.pose.position.z;
 
-    // get measure orintention
-    Eigen::Quaterniond quaternion_measured;
-    quaternion_measured.w() = msg.pose.orientation.w;
-    quaternion_measured.x() = msg.pose.orientation.x;
-    quaternion_measured.y() = msg.pose.orientation.y;
-    quaternion_measured.z() = msg.pose.orientation.z;
+    // get measure orintention and convert to euler angles, seems to be not very correct
+//     Eigen::Quaterniond quaternion_measured;
+//     quaternion_measured.w() = msg.pose.orientation.w;
+//     quaternion_measured.x() = msg.pose.orientation.x;
+//     quaternion_measured.y() = msg.pose.orientation.y;
+//     quaternion_measured.z() = msg.pose.orientation.z;
+//     euler_measured_ = quaternion_measured.toRotationMatrix().eulerAngles(0, 1, 2);  // roll, pitch and yaw
 
-    // convert to rotation matrix, then to euler angles
-    euler_measured_ = quaternion_measured.toRotationMatrix().eulerAngles(0, 1, 2);  // roll, pitch and yaw
+    // Using tf for conversion
+    tf::Quaternion quat_measured;
+    tf::quaternionMsgToTF(msg.pose.orientation, quat_measured);
+    tf::Matrix3x3(quat_measured).getRPY(euler_measured_(0), euler_measured_(1), euler_measured_(2));
+//     std::cout << "Roll:" << euler_measured_(0)*180/3.1415 << std::endl;
+//     std::cout << "Pitch:" << euler_measured_(1)*180/3.1415 << std::endl;
+//     std::cout << "Yaw:" << euler_measured_(2)*180/3.1415 << std::endl << std::endl;
 
     // current time stamp of the message
     time_stamp_      = msg.header.stamp;
@@ -183,6 +189,11 @@ void Full_State_Kalman_Filter::subscriberCallback(const geometry_msgs::PoseStamp
     euler_rate_estimated_ = euler_rate_estimated_ + K*euler_residual;
     // new covariance
     euler_rate_cov_estimated_ = (I - K*H) * euler_rate_cov_estimated_;
+
+
+    std::cout << "Roll:" << euler_rate_estimated_(0)*180/3.1415 << std::endl;
+    std::cout << "Pitch:" << euler_rate_estimated_(1)*180/3.1415 << std::endl;
+    std::cout << "Yaw:" << euler_rate_estimated_(2)*180/3.1415 << std::endl << std::endl;
 
 
     // prepare published message

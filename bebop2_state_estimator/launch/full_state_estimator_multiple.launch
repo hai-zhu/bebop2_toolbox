@@ -38,7 +38,8 @@
     		name="full_state_kalman_filter_node_4"
     		respawn="false"
     		launch-prefix=""
-    		required="true">
+    		required="true"
+			output="screen">
 
 			<remap from="/bebop/pose" to="/Bebop4/pose"/>
 			<remap from="/bebop/full_state_estimation" to="/Bebop4/full_state_estimation"/>

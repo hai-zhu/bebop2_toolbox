@@ -1,0 +1,59 @@
+<launch>
+
+    <node   pkg="bebop2_ground_control"
+            type="ground_control_node"
+            name="ground_control_node_1"
+            respawn="false"
+            launch-prefix=""
+    		required="true">
+
+            <remap from="/bebop/takeoff" to="/q1/real/takeoff"/>
+            <remap from="/bebop/land" to="/q1/real/land"/>
+            <remap from="/bebop/cmd_vel" to="/q1/real/cmd_vel"/>
+            <remap from="/bebop/cmd_vel_stamped" to="/q1/real/cmd_vel_stamped"/>
+
+    </node>
+
+    <node   pkg="bebop2_ground_control"
+            type="ground_control_node"
+            name="ground_control_node_2"
+            respawn="false"
+            launch-prefix=""
+    		required="true">
+
+            <remap from="/bebop/takeoff" to="/q2/real/takeoff"/>
+            <remap from="/bebop/land" to="/q2/real/land"/>
+            <remap from="/bebop/cmd_vel" to="/q2/real/cmd_vel"/>
+            <remap from="/bebop/cmd_vel_stamped" to="/q2/real/cmd_vel_stamped"/>
+
+    </node>
+
+    <node   pkg="bebop2_ground_control"
+            type="ground_control_node"
+            name="ground_control_node_3"
+            respawn="false"
+            launch-prefix=""
+    		required="true">
+
+            <remap from="/bebop/takeoff" to="/q3/real/takeoff"/>
+            <remap from="/bebop/land" to="/q3/real/land"/>
+            <remap from="/bebop/cmd_vel" to="/q3/real/cmd_vel"/>
+            <remap from="/bebop/cmd_vel_stamped" to="/q3/real/cmd_vel_stamped"/>
+
+    </node>
+
+    <node   pkg="bebop2_ground_control"
+            type="ground_control_node"
+            name="ground_control_node_4"
+            respawn="false"
+            launch-prefix=""
+    		required="true">
+
+            <remap from="/bebop/takeoff" to="/q4/real/takeoff"/>
+            <remap from="/bebop/land" to="/q4/real/land"/>
+            <remap from="/bebop/cmd_vel" to="/q4/real/cmd_vel"/>
+            <remap from="/bebop/cmd_vel_stamped" to="/q4/real/cmd_vel_stamped"/>
+
+    </node>
+
+</launch>

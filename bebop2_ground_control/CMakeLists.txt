@@ -13,8 +13,11 @@ find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs sensor_msgs geomet
 catkin_package( )
 
 # Specify locations of header files .
-include_directories( include ${catkin_INCLUDE_DIRS} )
-include_directories(${catkin_INCLUDE_DIRS})
+include_directories( 
+    include 
+    ${catkin_INCLUDE_DIRS} 
+    include/${PROJECT_NAME}
+)
 
-add_executable( ground_control_node ground_control_node.cpp )
+add_executable( ground_control_node nodes/ground_control_node.cpp )
 target_link_libraries( ground_control_node ${catkin_LIBRARIES} )
