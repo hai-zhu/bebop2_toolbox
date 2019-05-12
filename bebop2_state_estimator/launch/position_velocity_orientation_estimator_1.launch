@@ -1,6 +1,4 @@
 <launch>
-	<arg name="bebop_config_file_1"
-		 default="$(find bebop2_state_estimator)/config/bebop_1.yaml" />
 
   	<node 	pkg="bebop2_state_estimator"
     		type="position_velocity_orientation_filter_node"
@@ -8,7 +6,9 @@
     		respawn="false"
     		launch-prefix=""
     		required="true">
-		<rosparam file="$(arg bebop_config_file_1)" command="load" />
+		
+			<remap from="/bebop/pose" to="/Bebop1/pose"/>
+			<remap from="/bebop/position_velocity_orientation_estimation" to="/Bebop1/position_velocity_orientation_estimation"/>
   	</node>
 
 </launch>

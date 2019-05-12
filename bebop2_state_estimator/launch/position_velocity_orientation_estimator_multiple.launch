@@ -1,0 +1,47 @@
+<launch>
+
+  	<node 	pkg="bebop2_state_estimator"
+    		type="position_velocity_orientation_filter_node"
+    		name="position_velocity_orientation_filter_node_1"
+    		respawn="false"
+    		launch-prefix=""
+    		required="true">
+		
+			<remap from="/bebop/pose" to="/Bebop1/pose"/>
+			<remap from="/bebop/position_velocity_orientation_estimation" to="/Bebop1/position_velocity_orientation_estimation"/>
+  	</node>
+
+	<node 	pkg="bebop2_state_estimator"
+    		type="position_velocity_orientation_filter_node"
+    		name="position_velocity_orientation_filter_node_2"
+    		respawn="false"
+    		launch-prefix=""
+    		required="true">
+		
+			<remap from="/bebop/pose" to="/Bebop2/pose"/>
+			<remap from="/bebop/position_velocity_orientation_estimation" to="/Bebop2/position_velocity_orientation_estimation"/>
+  	</node>
+
+	<node 	pkg="bebop2_state_estimator"
+    		type="position_velocity_orientation_filter_node"
+    		name="position_velocity_orientation_filter_node_3"
+    		respawn="false"
+    		launch-prefix=""
+    		required="true">
+		
+			<remap from="/bebop/pose" to="/Bebop3/pose"/>
+			<remap from="/bebop/position_velocity_orientation_estimation" to="/Bebop3/position_velocity_orientation_estimation"/>
+  	</node>
+
+	<node 	pkg="bebop2_state_estimator"
+    		type="position_velocity_orientation_filter_node"
+    		name="position_velocity_orientation_filter_node_4"
+    		respawn="false"
+    		launch-prefix=""
+    		required="true">
+		
+			<remap from="/bebop/pose" to="/Bebop4/pose"/>
+			<remap from="/bebop/position_velocity_orientation_estimation" to="/Bebop4/position_velocity_orientation_estimation"/>
+  	</node>
+
+</launch>

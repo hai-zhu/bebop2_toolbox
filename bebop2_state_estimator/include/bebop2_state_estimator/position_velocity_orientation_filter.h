@@ -29,7 +29,7 @@ class Position_Velocity_Orientation_Filter
 {
 public:
     //! Constructor, "main" will need to instantiate a ROS nodehandle, then pass it to the constructor
-    explicit Position_Velocity_Orientation_Filter(ros::NodeHandle nh, std::string sub_topic, std::string pub_topic, double node_rate);
+    explicit Position_Velocity_Orientation_Filter(ros::NodeHandle nh);
 
 private:
     //! Ros node handle
@@ -38,10 +38,8 @@ private:
     //! Some objects to support subscriber, service, and publisher
     ros::Subscriber     sub_;
     ros::Publisher      pub_;
-    double              node_rate_;             // node rate
 
     //! Bebop2 measurement
-    std::string         bebop2_sub_topic_;      // sub topic name from measurements (MoCap)
     Eigen::Vector3d     pos_measured_;          // measured position information
 
     //! Time information for filter
@@ -50,7 +48,6 @@ private:
     double              dt_;                    // time difference between two measurements
 
     //! State estimation
-    std::string                 bebop2_pub_topic_;      // pub topic name after filtering
     Eigen::Matrix<double, 6, 1> pos_vel_estimated_;     // estimated state (pos & vel)
     Eigen::Matrix<double, 6, 6> pos_vel_cov_estimated_; // estimated covariance matrix
 

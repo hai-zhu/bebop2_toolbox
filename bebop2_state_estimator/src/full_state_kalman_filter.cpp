@@ -6,8 +6,7 @@
 #include <bebop2_state_estimator/full_state_kalman_filter.h>
 
 // Constructor:  this will get called whenever an instance of this class is created
-Full_State_Kalman_Filter::Full_State_Kalman_Filter(ros::NodeHandle nh, std::string sub_topic, std::string pub_topic, double node_rate)
-    : nh_(nh), bebop2_sub_topic_(sub_topic), bebop2_pub_topic_(pub_topic), node_rate_(node_rate)
+Full_State_Kalman_Filter::Full_State_Kalman_Filter(ros::NodeHandle nh): nh_(nh)
 {
     ROS_INFO("In class constructor of Full_State_Kalman_Filter");
 
@@ -44,9 +43,8 @@ Full_State_Kalman_Filter::Full_State_Kalman_Filter(ros::NodeHandle nh, std::stri
 
     time_stamp_ = ros::Time::now();
     time_stamp_previous_ = ros::Time::now();
+    dt_ = 0.001;
 
-    // discrete time using in the filter, delta_t
-//     dt_ = 1.0 / node_rate_;
 }
 
 
@@ -54,8 +52,7 @@ Full_State_Kalman_Filter::Full_State_Kalman_Filter(ros::NodeHandle nh, std::stri
 void Full_State_Kalman_Filter::initializeSubscribers()
 {
     ROS_INFO("Initializing subscribers");
-    sub_ = nh_.subscribe(bebop2_sub_topic_, 1, &Full_State_Kalman_Filter::subscriberCallback, this);
-    ROS_INFO_STREAM(bebop2_sub_topic_);
+    sub_ = nh_.subscribe("/bebop/pose", 1, &Full_State_Kalman_Filter::subscriberCallback, this);
 }
 
 
@@ -63,8 +60,7 @@ void Full_State_Kalman_Filter::initializeSubscribers()
 void Full_State_Kalman_Filter::initializePublishers()
 {
     ROS_INFO("Initializing publishers");
-    pub_ = nh_.advertise<bebop2_msgs::FullStateWithCovarianceStamped>(bebop2_pub_topic_, 1, true);
-    ROS_INFO_STREAM(bebop2_pub_topic_);
+    pub_ = nh_.advertise<bebop2_msgs::FullStateWithCovarianceStamped>("/bebop/full_state_estimation", 1, true);
 }
 
 

@@ -6,8 +6,7 @@
 #include <bebop2_state_estimator/position_velocity_orientation_filter.h>
 
 // Constructor:  this will get called whenever an instance of this class is created
-Position_Velocity_Orientation_Filter::Position_Velocity_Orientation_Filter(ros::NodeHandle nh, std::string sub_topic, std::string pub_topic, double node_rate)
-    : nh_(nh), bebop2_sub_topic_(sub_topic), bebop2_pub_topic_(pub_topic), node_rate_(node_rate)
+Position_Velocity_Orientation_Filter::Position_Velocity_Orientation_Filter(ros::NodeHandle nh): nh_(nh)
 {
     ROS_INFO("In class constructor of Position_Velocity_Orientation_Filter");
 
@@ -32,9 +31,8 @@ Position_Velocity_Orientation_Filter::Position_Velocity_Orientation_Filter(ros::
 
     time_stamp_ = ros::Time::now();
     time_stamp_previous_ = ros::Time::now();
+    dt_ = 0.001;
 
-    // discrete time using in the filter, delta_t
-    // dt_ = 1.0 / node_rate_;
 }
 
 
@@ -42,8 +40,7 @@ Position_Velocity_Orientation_Filter::Position_Velocity_Orientation_Filter(ros::
 void Position_Velocity_Orientation_Filter::initializeSubscribers()
 {
     ROS_INFO("Initializing subscribers");
-    sub_ = nh_.subscribe(bebop2_sub_topic_, 1, &Position_Velocity_Orientation_Filter::subscriberCallback, this);
-    ROS_INFO_STREAM(bebop2_sub_topic_);
+    sub_ = nh_.subscribe("/bebop/pose", 1, &Position_Velocity_Orientation_Filter::subscriberCallback, this);
 }
 
 
@@ -51,8 +48,7 @@ void Position_Velocity_Orientation_Filter::initializeSubscribers()
 void Position_Velocity_Orientation_Filter::initializePublishers()
 {
     ROS_INFO("Initializing publishers");
-    pub_ = nh_.advertise<nav_msgs::Odometry>(bebop2_pub_topic_, 1, true);
-    ROS_INFO_STREAM(bebop2_pub_topic_);
+    pub_ = nh_.advertise<nav_msgs::Odometry>("/bebop/position_velocity_orientation_estimation", 1, true);
 }
 
 
