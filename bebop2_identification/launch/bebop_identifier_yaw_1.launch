@@ -1,0 +1,14 @@
+<launch>
+
+    <node   pkg="bebop2_identification"
+            type="bebop_identifier_yaw_node"
+            name="bebop_identifier_yaw_node_1"
+            respawn="false"
+            launch-prefix=""
+    		required="true">
+
+            <remap from="/bebop/cmd_vel" to="/q4/real/cmd_vel"/>
+
+    </node>
+
+</launch>
