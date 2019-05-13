@@ -1,0 +1,12 @@
+<launch>
+
+    <node   pkg="bebop2_sphinx"
+            type="sphinx_data_logger_node"
+            name="sphinx_data_logger_node"
+            respawn="false"
+            launch-prefix=""
+    		required="true">
+
+    </node>
+
+</launch>

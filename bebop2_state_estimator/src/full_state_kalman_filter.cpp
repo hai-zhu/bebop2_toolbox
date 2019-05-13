@@ -191,9 +191,9 @@ void Full_State_Kalman_Filter::subscriberCallback(const geometry_msgs::PoseStamp
     euler_rate_cov_estimated_ = (I - K*H) * euler_rate_cov_estimated_;
 
 
-    std::cout << "Roll:" << euler_rate_estimated_(0)*180/3.1415 << std::endl;
-    std::cout << "Pitch:" << euler_rate_estimated_(1)*180/3.1415 << std::endl;
-    std::cout << "Yaw:" << euler_rate_estimated_(2)*180/3.1415 << std::endl << std::endl;
+//     std::cout << "Roll:" << euler_rate_estimated_(0)*180/3.1415 << std::endl;
+//     std::cout << "Pitch:" << euler_rate_estimated_(1)*180/3.1415 << std::endl;
+//     std::cout << "Yaw:" << euler_rate_estimated_(2)*180/3.1415 << std::endl << std::endl;
 
 
     // prepare published message

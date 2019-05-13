@@ -132,9 +132,9 @@ void data_logger::read_pose(ConstPosesStampedPtr &msg)
 
 int main(int argc, char **argv)
 {
-	ros::init(argc, argv, "sphinx_data_logger");
+	ros::init(argc, argv, "sphinx_data_logger_node");
 	ros::NodeHandle nh;
-	ros::Rate loop_rate(30);  // in Hz
+	ros::Rate loop_rate(60);  // in Hz
 
 	data_logger my_logger;
 

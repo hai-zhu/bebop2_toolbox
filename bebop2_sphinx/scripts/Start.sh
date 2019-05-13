@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # start Sphinx
-gnome-terminal --tab "sphinx" -x bash -c "sudo systemctl start firmwared.service;GAZEBO_PLUGIN_PATH=`pwd`/build:$GAZEBO_PLUGIN_PATH sphinx --log-level=dbg /opt/parrot-sphinx/usr/share/sphinx/worlds/empty.world /opt/parrot-sphinx/usr/share/sphinx/drones/bebop2.drone;exec bash;"
+gnome-terminal --tab "sphinx" -x bash -c "sudo systemctl start firmwared.service;GAZEBO_PLUGIN_PATH=`pwd`/build:$GAZEBO_PLUGIN_PATH sphinx --log-level=dbg /opt/parrot-sphinx/usr/share/sphinx/worlds/empty.world /opt/parrot-sphinx/usr/share/sphinx/drones/bebop2_eth0.drone;exec bash;"
 sleep 20s
 
 
