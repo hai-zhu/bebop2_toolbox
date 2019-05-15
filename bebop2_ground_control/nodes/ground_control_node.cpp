@@ -16,6 +16,7 @@ class Ground_Controller
         ros::Publisher      landing_pub_;       // landing message publisher
         ros::Publisher      cmd_stamped_pub_;   // time stamped control commands for recording
         bool                auto_navigation_;   // if in auto mode
+        bool                landing_;           // if needs to land
         int                 node_rate_;         // control node rate
 
     public:
@@ -24,6 +25,7 @@ class Ground_Controller
         {
             // Auto navigation is disabled by default
             auto_navigation_ = false;
+            landing_         = false;
             node_rate_       = 20;
 
             // Initialize subscribers
@@ -57,6 +59,7 @@ class Ground_Controller
             if(msg.buttons[1])                          // A
             {
                 this->auto_navigation_ = false;
+                this->landing_ = false;
                 std_msgs::Empty takeoff_msg;
                 takeoff_pub_.publish(takeoff_msg);
             }
@@ -64,12 +67,13 @@ class Ground_Controller
             // landing
             if(msg.buttons[2])                          // B
             {
+                this->landing_ = true;
                 std_msgs::Empty landing_msg;
                 landing_pub_.publish(landing_msg);
             }
 
             // piloting
-            if(!this->auto_navigation_)
+            if(!this->auto_navigation_ && !this->landing_)
             {
                 geometry_msgs::Twist cmd_vel;
                 cmd_vel.linear.x = msg.axes[3];
@@ -100,7 +104,7 @@ class Ground_Controller
 
         void auto_nav(const geometry_msgs::Twist &msg)
         {
-            if(this->auto_navigation_)
+            if(this->auto_navigation_ && !this->landing_)
             {
                 cmd_pub_.publish(msg);
                 geometry_msgs::TwistStamped cmd_vel_stamped;

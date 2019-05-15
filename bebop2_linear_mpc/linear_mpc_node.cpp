@@ -26,6 +26,17 @@ using namespace Eigen;
 ACADOvariables acadoVariables;
 ACADOworkspace acadoWorkspace;
 
+const int wps_n = 8;
+// double wps_x[wps_n] = { 1.5,-1.5,-1.5, 1.5};
+// double wps_y[wps_n] = {-0.8,-0.8, 0.8, 0.8};
+// double wps_z[wps_n] = { 1.2, 1.2, 1.2, 1.2};
+// double wps_yaw[wps_n] = {2.5536, 0.5880, -0.5880, -2.5536};
+double wps_x[wps_n] = { 0, 0.8, 1.5, 0.8, 0, -0.8, -1.5, -0.8};
+double wps_y[wps_n] = { 0, 0.75, 0, -0.75, 0, 0.75, 0, -0.75};
+double wps_z[wps_n] = { 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2};
+// double wps_yaw[wps_n] = {2.5536, 0.5880, -0.5880, -2.5536};
+int wps_idx = 0;
+
 class linear_mpc
 {
     public:
@@ -40,12 +51,13 @@ class linear_mpc
 
 linear_mpc::linear_mpc()
 {
-    this->odom_sub = nh.subscribe("/bebop2/odometry", 1, &linear_mpc::read_state,this);
-    this->ctrl_pub = nh.advertise<geometry_msgs::Twist>("/bebop2_auto/cmd_vel",1);
-    this->ref.position.x = 3.25;
-    this->ref.position.y = 0;
-    this->ref.position.z = 1.5;
-    // this->ref.orientation.z = M_PI; //reference yaw
+    this->odom_sub = nh.subscribe("/bebop/odometry", 1, &linear_mpc::read_state,this);
+    this->ctrl_pub = nh.advertise<geometry_msgs::Twist>("/bebop_auto/cmd_vel",1);
+    this->ref.position.x = wps_x[wps_idx];
+    this->ref.position.y = wps_y[wps_idx];
+    this->ref.position.z = wps_z[wps_idx];
+    // this->ref.orientation.z = wps_yaw[wps_idx]; //reference yaw
+    this->ref.orientation.z = 0;
 }
 
 void linear_mpc::read_state(const nav_msgs::Odometry& msg)
@@ -75,9 +87,9 @@ void linear_mpc::read_state(const nav_msgs::Odometry& msg)
     acadoVariables.yN[ 0 ] = this->ref.position.x; // x
 	acadoVariables.yN[ 1 ] = this->ref.position.y; // y
 	acadoVariables.yN[ 2 ] = this->ref.position.z; // z
-    acadoVariables.yN[ 3 ] = 0; // y
-	acadoVariables.yN[ 4 ] = 0; // z
-    acadoVariables.yN[ 5 ] = 0; // z
+    acadoVariables.yN[ 3 ] = 0;
+	acadoVariables.yN[ 4 ] = 0;
+    acadoVariables.yN[ 5 ] = this->ref.orientation.z;
 
     for (int i = 0; i < NX; ++i)
 	{
@@ -93,6 +105,17 @@ void linear_mpc::read_state(const nav_msgs::Odometry& msg)
     roll0 = -pitch * sin(yaw) + roll * cos(yaw);
     pitch0 = pitch * cos(yaw) + roll * sin(yaw);
     // cout << "roll0: " << roll0 << " pitch0: " << pitch0 << " yaw: " << yaw << endl;
+
+    // SWITCH WAYPOINT
+    if(sqrt(pow(msg.pose.pose.position.x - this->ref.position.x,2) + pow(msg.pose.pose.position.y - this->ref.position.y,2) + pow(msg.pose.pose.position.z - this->ref.position.z,2)) < 0.4)
+    {
+        wps_idx++;
+        this->ref.position.x = wps_x[wps_idx % wps_n];
+        this->ref.position.y = wps_y[wps_idx % wps_n];
+        this->ref.position.z = wps_z[wps_idx % wps_n];
+        // this->ref.orientation.z = wps_yaw[wps_idx % wps_n];
+        this->ref.orientation.z = 0;
+    }
 
     // current feedback
     acadoVariables.x0[ 0 ] = msg.pose.pose.position.x;    // x
@@ -163,10 +186,10 @@ int main(int argc, char **argv)
 	}
 
 	//Initiate ROS  
-	ros::init(argc, argv, "marker_detector");  
+	ros::init(argc, argv, "linear_mpc_node");  
 	
     //Create an object of class SubscribeAndPublish that will take care of everything  
-	linear_mpc mpcObject;; 
+	linear_mpc mpcObject;
 
 	ros::spin();  
 	return 0;  

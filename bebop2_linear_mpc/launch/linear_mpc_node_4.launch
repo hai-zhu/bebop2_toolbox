@@ -1,0 +1,13 @@
+<launch>
+
+  	<node 	pkg="bebop2_linear_mpc"
+    		type="linear_mpc_node"
+    		name="linear_mpc_node_1"
+    		respawn="false"
+    		launch-prefix=""
+    		required="true">
+
+			<remap from="/bebop/odometry" to="/Bebop4/position_velocity_orientation_estimation"/> 
+  	</node>
+
+</launch>

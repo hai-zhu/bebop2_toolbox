@@ -1,0 +1,122 @@
+pitch(forward)
+---
+	cmd: [-pi * 10 / 180,pi * 10 / 180] rad
+	ang: [-pi * 10 / 180,pi * 10 / 180] rad
+
+	Continuous-time first-order:
+	  A = 
+		   x1
+	   x1  -6.732
+	 
+	  B = 
+		    u1
+	   x1  -2.645
+	 
+	  C = 
+		   x1
+	   y1  -2.591
+	 
+	  D = 
+	       u1
+	   y1   0
+
+	y_dot = 6.85417 * u - 6.7317 * y
+
+roll(left)
+---
+	cmd: [-pi * 10 / 180,pi * 10 / 180] rad
+	ang: [-pi * 10 / 180,pi * 10 / 180] rad
+
+	Continuous-time first-order:
+	  A = 
+		   x1
+	   x1  -6.753
+	 
+	  B = 
+		    u1
+	   x1  -2.659
+	 
+	  C = 
+		   x1
+	   y1  -2.582
+	 
+	  D = 
+	       u1
+	   y1   0
+
+	y_dot = 6.86585 * u - 6.7529 * y
+
+vertical velocity(upward)
+---
+	cmd: [-1,1]
+
+	Continuous-time second-order:
+	  A = 
+		   x1      x2
+	   x1  -2.292   -2.55
+	   x2   9.742  -5.845
+	 
+	  B = 
+		     u1
+	   x1  0.006423
+	   x2    -0.657
+	 
+	  C = 
+		    x1       x2
+	   y1    17.65  -0.3225
+	 
+	  D = 
+	       u1
+	   y1   0
+
+vertical acceleration(upward)
+---
+	cmd: [-1,1]
+
+	Continuous-time second-order:
+	  A = 
+           	x1      x2
+	   x1  -8.137  -38.24
+	   x2       1       0
+	 
+	  B = 
+	       u1
+	   x1   1
+	   x2   0
+	 
+	  C = 
+		   x1      x2
+	   y1   28.06  -12.44
+	 
+	  D = 
+		   u1
+	   y1  0.3253
+yawrate(clockwise)
+---
+	cmd: [-1,1]
+	rot: [-90,90] deg/s
+	  A = 
+		    x1       x2
+	   x1   0.9604  0.05466
+	   x2  -0.1758   0.9039
+	 
+	  B = 
+		       u1
+	   x1  -0.0004946
+	   x2      0.0108
+	 
+	  C = 
+		  x1     x2
+	   y1   1920  12.12
+	 
+	  D = 
+	       u1
+	   y1   0
+
+air drag X
+---
+	0.1840
+
+air drag Y
+---
+	0.2007

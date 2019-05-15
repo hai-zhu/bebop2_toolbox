@@ -1,0 +1,3 @@
+PilotingSettingsMaxTiltCurrent: 180 deg
+SpeedSettingsMaxVerticalSpeedCurrent: 10 m/s
+SpeedSettingsMaxRotationSpeedCurrent: 900 deg
