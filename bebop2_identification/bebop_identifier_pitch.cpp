@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	// differential time
 	ros::Duration diffTime = ros::Time::now() - startTime;
 	double dt = diffTime.toSec();
-	while (ros::ok() && dt <= 20.0)
+	while (ros::ok() && dt <= 16.0)
 	{
 		double cmd = (int(dt/1.5)%2 == 0)?-1:1;
 		geometry_msgs::Twist msg;

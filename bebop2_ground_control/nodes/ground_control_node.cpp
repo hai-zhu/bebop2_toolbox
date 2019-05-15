@@ -26,7 +26,7 @@ class Ground_Controller
             // Auto navigation is disabled by default
             auto_navigation_ = false;
             landing_         = false;
-            node_rate_       = 20;
+            node_rate_       = 10;
 
             // Initialize subscribers
             joy_sub_ = nh_.subscribe("/bebop/joy", 1, &Ground_Controller::from_joystick, this);

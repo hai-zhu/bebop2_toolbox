@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 	while (ros::ok() && dt <= 12.0)
 	{
 		// double cmd = (int(dt) % 4 - 1==2)?0:int(dt) % 4 - 1;
-		double cmd = (int(dt/1.0)%2 == 0)?1:-1;
+		double cmd = (int(dt/1.0)%2 == 0)?-1:1;
 		geometry_msgs::Twist msg;
 		msg.linear.x = 0; 
 		msg.linear.y = 0;

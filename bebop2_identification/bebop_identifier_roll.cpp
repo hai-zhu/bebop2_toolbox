@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 	double dt = diffTime.toSec();
 	while (ros::ok() && dt <= 16.0)
 	{
-		double cmd = (int(dt/1.5)%2 == 0)?-1:1;
+		double cmd = (int(dt/1.5)%2 == 0)?1:-1;
 		geometry_msgs::Twist msg;
 		msg.linear.x = 0; 
 		msg.linear.y = cmd; // 10 degree

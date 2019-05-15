@@ -7,7 +7,7 @@
             launch-prefix=""
     		required="true">
 
-            <remap from="/bebop2/cmd_vel" to="/q4/real/cmd_vel"/>
+            <remap from="/bebop2/cmd_vel" to="/bebop_auto_4/cmd_vel"/>
 
     </node>
 
