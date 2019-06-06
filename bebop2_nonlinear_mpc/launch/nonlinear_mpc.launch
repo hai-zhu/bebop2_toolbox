@@ -1,0 +1,14 @@
+<launch>
+
+    <node   pkg="bebop2_nonlinear_mpc"
+            type="single_mpc_node"
+            name="single_mpc_node"
+            respawn="false"
+            output="screen"
+            required="true">
+
+            <remap from="/bebop/odometry" to="/simulator/odometry" />
+
+    </node>
+
+</launch>
