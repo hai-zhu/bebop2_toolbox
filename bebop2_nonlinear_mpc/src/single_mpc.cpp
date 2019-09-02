@@ -3,13 +3,10 @@
  * @Author: Hai Zhu
  * @Affiliation: Delft University of Technology
  * @Date: 2019-06-04 12:50:30
- * @LastEditTime: 2019-06-06 13:21:27
+ * @LastEditTime: 2019-06-05 18:35:57
  */
 
 #include "bebop2_nonlinear_mpc/single_mpc.h"
-
-ACADOvariables acadoVariables;
-ACADOworkspace acadoWorkspace;
 
 //! Constructor
 Single_MPC::Single_MPC(ros::NodeHandle nh) : nh_(nh)
@@ -29,17 +26,12 @@ Single_MPC::Single_MPC(ros::NodeHandle nh) : nh_(nh)
     path_plan_.setZero();
 
     // Reset all acado solver memory
-	// memset(&acadoWorkspace, 0, sizeof( acadoWorkspace ));
-	// memset(&acadoVariables, 0, sizeof( acadoVariables ));
+	memset(&acadoWorkspace, 0, sizeof( acadoWorkspace ));
+	memset(&acadoVariables, 0, sizeof( acadoVariables ));
 
     // Initialize the acado solver
     acado_initializeSolver();
 
-}
-
-Single_MPC::~Single_MPC()
-{
-    
 }
 
 //! Callback function, solving the optimization problem

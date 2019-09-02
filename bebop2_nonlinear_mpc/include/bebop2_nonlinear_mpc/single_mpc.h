@@ -3,7 +3,7 @@
  * @Author: Hai Zhu
  * @Affiliation: Delft University of Technology
  * @Date: 2019-06-04 12:50:16
- * @LastEditTime: 2019-06-06 12:33:00
+ * @LastEditTime: 2019-06-05 18:21:34
  */
 
 #ifndef BEBOP2_NONLINEAR_MPC_SINGLE_MPC_H
@@ -37,6 +37,9 @@
 #define NYN			ACADO_NYN
 #define VERBOSE     1			    // show iterations: 1, silent: 0
 #define PI          3.14159265358979323846
+
+ACADOvariables acadoVariables;
+ACADOworkspace acadoWorkspace;
 
 // Bebop control commands limit
 const double    maxRoll = 12.0*PI / 180.0;

@@ -65,5 +65,3 @@ target_include_directories(single_mpc_lib PUBLIC
     single_mpc_export
 )
 
-add_executable(single_mpc_node src/single_mpc_node.cpp src/single_mpc.cpp)
-target_link_libraries(single_mpc_node ${catkin_LIBRARIES} single_mpc_lib)
