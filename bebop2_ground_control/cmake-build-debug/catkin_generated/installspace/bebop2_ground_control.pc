@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: bebop2_ground_control
+Description: Description of bebop2_ground_control
+Version: 0.0.0
+Cflags: 
+Libs: -L/usr/local/lib 
+Requires: 

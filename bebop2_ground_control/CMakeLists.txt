@@ -20,5 +20,5 @@ include_directories(
     include/${PROJECT_NAME}
 )
 
-add_executable( ground_control_node nodes/ground_control_node.cpp )
+add_executable( ground_control_node nodes/ground_control_node.cpp)
 target_link_libraries( ground_control_node ${catkin_LIBRARIES} )

@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/hai/ROS/hai_ws/src/bebop2_toolbox/bebop2_ground_control/cmake-build-debug/devel/setup.sh

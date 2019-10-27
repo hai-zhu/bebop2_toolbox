@@ -2,3 +2,7 @@
 bebop2_state_estimator/\.vscode/
 
 \.vscode/
+
+.idea/
+
+bebop2_state_estimator/cmake-build-debug/

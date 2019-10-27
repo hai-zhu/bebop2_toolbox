@@ -43,7 +43,7 @@ Full_State_Kalman_Filter::Full_State_Kalman_Filter(ros::NodeHandle nh): nh_(nh)
 
     time_stamp_ = ros::Time::now();
     time_stamp_previous_ = ros::Time::now();
-    dt_ = 0.001;
+    dt_ = 0.01;
 
 }
 

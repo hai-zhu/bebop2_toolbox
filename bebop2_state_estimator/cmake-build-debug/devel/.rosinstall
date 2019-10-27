@@ -1,2 +1,0 @@
-- setup-file:
-    local-name: /home/hai/ROS/catkin_ws/src/bebop2_toolbox/bebop2_state_estimator/cmake-build-debug/devel/setup.sh

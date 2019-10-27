@@ -49,14 +49,7 @@ add_library(single_mpc_lib STATIC
     qpoases/SRC/SubjectTo.cpp
     qpoases/SRC/Utils.cpp
     qpoases/SRC/EXTRAS/SolutionAnalysis.cpp
-    single_mpc_export/acado_auxiliary_functions.c
-    single_mpc_export/acado_auxiliary_functions.h 
-    single_mpc_export/acado_common.h
-    single_mpc_export/acado_integrator.c
-    single_mpc_export/acado_qpoases_interface.hpp
-    single_mpc_export/acado_qpoases_interface.cpp
-    single_mpc_export/acado_solver.c
-)
+        )
 target_include_directories(single_mpc_lib PUBLIC
     qpoases
     qpoases/EXTRAS

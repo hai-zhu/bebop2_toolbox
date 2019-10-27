@@ -1,8 +1,0 @@
-prefix=/usr/local
-
-Name: bebop2_state_estimator
-Description: Description of bebop2_state_estimator
-Version: 0.0.0
-Cflags: 
-Libs: -L/usr/local/lib 
-Requires: roscpp rospy std_msgs geometry_msgs message_runtime bebop2_msgs

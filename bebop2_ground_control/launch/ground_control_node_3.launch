@@ -1,0 +1,21 @@
+<launch>
+
+    <node   pkg="bebop2_ground_control"
+            type="ground_control_node"
+            name="ground_control_node_3"
+            respawn="false"
+            launch-prefix=""
+    		required="true">
+
+            <param name="node_rate" value="20"/>
+
+            <remap from="/bebop_auto/cmd_vel" to="/bebop_auto_3/cmd_vel"/>
+
+            <remap from="/bebop/takeoff" to="/q3/real/takeoff"/>
+            <remap from="/bebop/land" to="/q3/real/land"/>
+            <remap from="/bebop/cmd_vel" to="/q3/real/cmd_vel"/>
+            <remap from="/bebop/cmd_vel_stamped" to="/q3/real/cmd_vel_stamped"/>
+
+    </node>
+
+</launch>

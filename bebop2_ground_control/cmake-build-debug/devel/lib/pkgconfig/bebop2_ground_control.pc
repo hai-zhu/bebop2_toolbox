@@ -1,0 +1,8 @@
+prefix=/home/hai/ROS/hai_ws/src/bebop2_toolbox/bebop2_ground_control/cmake-build-debug/devel
+
+Name: bebop2_ground_control
+Description: Description of bebop2_ground_control
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/hai/ROS/hai_ws/src/bebop2_toolbox/bebop2_ground_control/cmake-build-debug/devel/lib 
+Requires: 

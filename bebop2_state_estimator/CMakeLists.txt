@@ -51,5 +51,5 @@ target_link_libraries(position_velocity_orientation_filter_node ${catkin_LIBRARI
 
 
 ## For debugging
-set (CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}  -g ")
-set (CMAKE_VERBOSE_MAKEFILE ON)
+#set (CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}  -g ")
+#set (CMAKE_VERBOSE_MAKEFILE ON)

@@ -7,6 +7,10 @@
             launch-prefix=""
     		required="true">
 
+            <param name="node_rate" value="20"/>
+
+            <remap from="/bebop_auto/cmd_vel" to="/bebop_auto_1/cmd_vel"/>
+
             <remap from="/bebop/takeoff" to="/q1/real/takeoff"/>
             <remap from="/bebop/land" to="/q1/real/land"/>
             <remap from="/bebop/cmd_vel" to="/q1/real/cmd_vel"/>

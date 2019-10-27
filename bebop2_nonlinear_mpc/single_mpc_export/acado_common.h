@@ -76,7 +76,7 @@ extern "C"
 /** Number of differential derivative variables. */
 #define ACADO_NXD 0
 /** Number of references/measurements per node on the first N nodes. */
-#define ACADO_NY 4
+#define ACADO_NY 8
 /** Number of references/measurements on the last (N + 1)st node. */
 #define ACADO_NYN 4
 /** Total number of QP optimization variables. */
@@ -116,11 +116,11 @@ real_t x[ 189 ];
  */
 real_t u[ 80 ];
 
-/** Column vector of size: 80
+/** Column vector of size: 160
  * 
- *  Matrix containing 20 reference/measurement vectors of size 4 for first 20 nodes.
+ *  Matrix containing 20 reference/measurement vectors of size 8 for first 20 nodes.
  */
-real_t y[ 80 ];
+real_t y[ 160 ];
 
 /** Column vector of size: 4
  * 
@@ -186,8 +186,8 @@ real_t state[ 130 ];
 /** Column vector of size: 180 */
 real_t d[ 180 ];
 
-/** Column vector of size: 80 */
-real_t Dy[ 80 ];
+/** Column vector of size: 160 */
+real_t Dy[ 160 ];
 
 /** Column vector of size: 4 */
 real_t DyN[ 4 ];
@@ -201,8 +201,8 @@ real_t evGu[ 720 ];
 /** Row vector of size: 13 */
 real_t objValueIn[ 13 ];
 
-/** Row vector of size: 4 */
-real_t objValueOut[ 4 ];
+/** Row vector of size: 8 */
+real_t objValueOut[ 8 ];
 
 /** Column vector of size: 9 */
 real_t Dx0[ 9 ];
