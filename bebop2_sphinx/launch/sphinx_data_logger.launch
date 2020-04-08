@@ -6,7 +6,6 @@
             respawn="false"
             launch-prefix=""
     		required="true">
-
     </node>
 
 </launch>

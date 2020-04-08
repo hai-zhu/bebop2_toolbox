@@ -6,6 +6,7 @@
 #include <gazebo/transport/transport.hh>
 #include <gazebo/msgs/poses_stamped.pb.h>
 #include "nav_msgs/Odometry.h"
+#include "geometry_msgs/PoseStamped.h"
 #include "std_msgs/Bool.h"
 
 #include <string>
@@ -20,19 +21,17 @@ using namespace std;
 class data_logger
 {
 	public:
-		gazebo::transport::SubscriberPtr odom_gazebo_sub;
+		gazebo::transport::SubscriberPtr pose_gazebo_sub;
 		ros::Subscriber reset_sub;
 		ros::Subscriber random_reset_sub;
 		gazebo::transport::PublisherPtr reset_pub;
-		ros::Publisher odom_pub;
-
-		bool isInited = false;
-		nav_msgs::Odometry odom_temp;
+		ros::Publisher pose_pub;
+		geometry_msgs::PoseStamped pose_temp;
 
 	data_logger(){}
-	void read_pose(ConstPosesStampedPtr &msg);
 	void reset(const std_msgs::Bool& msg);
 	void random_reset(const std_msgs::Bool& msg);
+	void read_pose(ConstPosesStampedPtr &msg);
 };
 
 void data_logger::reset(const std_msgs::Bool& msg)
@@ -57,7 +56,7 @@ void data_logger::reset(const std_msgs::Bool& msg)
     	msg_pose->set_allocated_position(msg_vector);
 		// set model
 		msg_model.set_allocated_pose(msg_pose);
-    	msg_model.set_name("bebop2");
+    	msg_model.set_name("Bebop1");
 		this->reset_pub->Publish(msg_model,true);
 	}
 }
@@ -86,7 +85,7 @@ void data_logger::random_reset(const std_msgs::Bool& msg)
     	msg_pose->set_allocated_position(msg_vector);
 		// set model
 		msg_model.set_allocated_pose(msg_pose);
-    	msg_model.set_name("bebop2");
+    	msg_model.set_name("Bebop1");
 		this->reset_pub->Publish(msg_model,true);
 	}
 }
@@ -94,38 +93,29 @@ void data_logger::random_reset(const std_msgs::Bool& msg)
 // Reading Follower pose from Gazebo
 void data_logger::read_pose(ConstPosesStampedPtr &msg)
 {
+	pose_temp.header.frame_id = "world";
+	// pose_temp.header.seq = 0;
+	const ::gazebo::msgs::Time &time_now = msg->time();
+	pose_temp.header.stamp.sec = time_now.sec();
+	pose_temp.header.stamp.nsec = time_now.nsec();
+
 	for (int i =0; i < msg->pose_size(); ++i)
     	{
-		const ::gazebo::msgs::Pose &pose = msg->pose(i);
-		if (pose.name() == "bebop2")
+		const ::gazebo::msgs::Pose &pose_now = msg->pose(i);
+		if (pose_now.name() == "Bebop1")
 		{
-			const ::gazebo::msgs::Vector3d &position = pose.position();
-			const ::gazebo::msgs::Quaternion q = pose.orientation();
-			nav_msgs::Odometry odom;
-			odom.header.stamp = ros::Time::now();
-			odom.header.frame_id = "world";
-			odom.pose.pose.position.x = position.x();
-			odom.pose.pose.position.y = position.y();
-			odom.pose.pose.position.z = position.z();
-			odom.pose.pose.orientation.x = q.x();
-			odom.pose.pose.orientation.y = q.y();
-			odom.pose.pose.orientation.z = q.z();
-			odom.pose.pose.orientation.w = q.w();
-			if(this->isInited)
-			{
-				ros::Duration diff = odom.header.stamp - this->odom_temp.header.stamp;
-				double dt = diff.toSec();
-				odom.twist.twist.linear.x = (odom.pose.pose.position.x - odom_temp.pose.pose.position.x) / dt;
-				odom.twist.twist.linear.y = (odom.pose.pose.position.y - odom_temp.pose.pose.position.y) / dt;
-				odom.twist.twist.linear.z = (odom.pose.pose.position.z - odom_temp.pose.pose.position.z) / dt;
-				// differential
-			}
-			else
-			{
-				this->isInited = true;
-			}
-			this->odom_pub.publish(odom);
-			this->odom_temp = odom;
+			const ::gazebo::msgs::Vector3d &position = pose_now.position();
+			const ::gazebo::msgs::Quaternion q = pose_now.orientation();
+
+			pose_temp.pose.position.x = position.x();
+			pose_temp.pose.position.y = position.y();
+			pose_temp.pose.position.z = position.z();
+			pose_temp.pose.orientation.w = q.w();
+			pose_temp.pose.orientation.x = q.x();
+			pose_temp.pose.orientation.y = q.y();
+			pose_temp.pose.orientation.z = q.z();
+
+			this->pose_pub.publish(pose_temp);
 		}
 	}
 }
@@ -144,16 +134,20 @@ int main(int argc, char **argv)
 
 	my_logger.reset_sub = nh.subscribe("/simulator/reset", 1, &data_logger::reset, &my_logger);
 	my_logger.random_reset_sub = nh.subscribe("/simulator/random_reset", 1, &data_logger::random_reset, &my_logger);
-	my_logger.odom_gazebo_sub = node->Subscribe("/gazebo/default/pose/info", &data_logger::read_pose, &my_logger);
+	my_logger.pose_gazebo_sub = node->Subscribe("/gazebo/default/pose/info", &data_logger::read_pose, &my_logger);
     my_logger.reset_pub = node->Advertise<gazebo::msgs::Model>("/gazebo/default/model/modify",1);
-	my_logger.odom_pub = nh.advertise<nav_msgs::Odometry>("/simulator/odometry",1);
+	my_logger.pose_pub = nh.advertise<geometry_msgs::PoseStamped>("/simulator/pose",1);
 	my_logger.reset_pub->WaitForConnection();
 
 	while (ros::ok())
 	{
-		ros::spinOnce();
-		loop_rate.sleep();
+		// ros::spinOnce();
+		// loop_rate.sleep();
+
+		ros::spin();
 	}
+
 	gazebo::client::shutdown();
+
 	return 0;
 }

@@ -6,3 +6,5 @@ bebop2_state_estimator/\.vscode/
 .idea/
 
 bebop2_state_estimator/cmake-build-debug/
+
+bebop2_sphinx/firmware/

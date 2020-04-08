@@ -28,20 +28,20 @@ include_directories(
 link_directories(${GAZEBO_LIBRARY_DIRS})
 list(APPEND CMAKE_CXX_FLAGS "${GAZEBO_CXX_FLAGS}")
 
-add_executable(bebop_identifier_pitch bebop_identifier_pitch.cpp)
+add_executable(bebop_identifier_pitch ./nodes/bebop_identifier_pitch.cpp)
 target_link_libraries(bebop_identifier_pitch ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} pthread)
 
-add_executable(bebop_identifier_roll bebop_identifier_roll.cpp)
+add_executable(bebop_identifier_roll ./nodes/bebop_identifier_roll.cpp)
 target_link_libraries(bebop_identifier_roll ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} pthread)
 
-add_executable(bebop_identifier_vertical_speed bebop_identifier_vertical_speed.cpp)
+add_executable(bebop_identifier_vertical_speed ./nodes/bebop_identifier_vertical_speed.cpp)
 target_link_libraries(bebop_identifier_vertical_speed ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} pthread)
 
-add_executable(bebop_identifier_yaw_speed bebop_identifier_yaw_speed.cpp)
+add_executable(bebop_identifier_yaw_speed ./nodes/bebop_identifier_yaw_speed.cpp)
 target_link_libraries(bebop_identifier_yaw_speed ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} pthread)
 
-add_executable(bebop_identifier_airdrag_x bebop_identifier_airdrag_x.cpp)
+add_executable(bebop_identifier_airdrag_x ./nodes/bebop_identifier_airdrag_x.cpp)
 target_link_libraries(bebop_identifier_airdrag_x ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} pthread)
 
-add_executable(bebop_identifier_airdrag_y bebop_identifier_airdrag_y.cpp)
+add_executable(bebop_identifier_airdrag_y ./nodes/bebop_identifier_airdrag_y.cpp)
 target_link_libraries(bebop_identifier_airdrag_y ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} pthread)

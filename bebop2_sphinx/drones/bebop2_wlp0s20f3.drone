@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<drone
+  name="bebop2"
+  firmware="/home/hai/ROS/hai_ws/src/bebop2_toolbox/bebop2_sphinx/firmware/ardrone3-milos_pc.ext2_latest.zip"
+  hardware="milosboard">
+  <machine_params
+    low_gpu="0"
+    with_front_cam="0"
+    with_hd_battery="0"
+    with_flir="0"
+    flir_pos="tilted"/>
+  <pose>default</pose>
+  <interface>eth1</interface>
+  <!-- 'wlan0' may need to be replaced the actual wifi interface name -->
+  <stolen_interface>wlp0s20f3:eth0:192.168.42.1/24</stolen_interface>
+</drone>
