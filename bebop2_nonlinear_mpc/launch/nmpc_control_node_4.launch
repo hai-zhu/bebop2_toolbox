@@ -1,0 +1,16 @@
+<launch>
+    <node   name='nmpc_control_node_4'
+            pkg='bebop2_nonlinear_mpc'
+            type='bebop_nmpc_node.py'
+            output='screen'>
+
+            <remap from="/mav_sim_odom" to="/bebop4/odom"/>
+            <remap from="/bebop/pose" to="/vrpn_client_node/bebop4/pose"/>
+            <remap from="/bebop/twist" to="/vrpn_client_node/bebop4/twist"/>
+            <remap from="/bebop_pose_goal" to="/bebop4/pose_goal"/>
+            <remap from="/mpc/trajectory_plan_vis" to="/bebop4/mpc/trajectory_plan_vis"/>
+            <remap from="/bebop_auto/cmd_vel" to="/bebop4/auto_cmd_vel"/>
+
+
+    </node>
+</launch>

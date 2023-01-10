@@ -1,1 +1,1 @@
-rosbag record -O data /Bebop4/pose /Bebop4/full_state_estimation /q4/real/cmd_vel /q4/real/cmd_vel_stamped /bebop/joy /Bebop4/position_velocity_orientation_estimation /data_logger/cmd_vel
+rosbag record -O data /bebop/joy /vrpn_client_node/bebop1/pose /vrpn_client_node/bebop1/twist /q1/real/cmd_vel /q1/real/cmd_vel_stamped /data_logger/cmd_vel

@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 		msg.linear.z = 0;
 		msg.angular.x = 0;
 		msg.angular.y = 0;
-		msg.angular.z = 0; // 90 rad/s
+		msg.angular.z = 0;
 		cmd_pub.publish(msg);
 		// publish message with stamp
 		geometry_msgs::TwistStamped msgStamped;
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 		msgStamped.twist.linear.z = 0;
 		msgStamped.twist.angular.x = 0;
 		msgStamped.twist.angular.y = 0;
-		msgStamped.twist.angular.z = 0; // 90 rad/s
+		msgStamped.twist.angular.z = 0;
 		cmd_log_pub.publish(msgStamped);
 		ros::spinOnce();
 		loop_rate.sleep();

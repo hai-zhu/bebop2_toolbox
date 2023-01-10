@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -g  -shared -Wl,-soname,libgtest.so -o libgtest.so CMakeFiles/gtest.dir/src/gtest-all.cc.o  -L/home/hai/ROS/hai_ws/src/bebop2_toolbox/bebop2_ground_control/cmake-build-debug/gtest/googlemock/gtest/src -Wl,-rpath,/home/hai/ROS/hai_ws/src/bebop2_toolbox/bebop2_ground_control/cmake-build-debug/gtest/googlemock/gtest/src -lpthread 

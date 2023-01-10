@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "bebop_identifier_pitch");
 	ros::NodeHandle nh;
-	ros::Rate loop_rate(40);  // in Hz
+	ros::Rate loop_rate(50);  // in Hz
 
 	ros::Publisher cmd_pub = nh.advertise<geometry_msgs::Twist>("/bebop2/cmd_vel",1);
 	ros::Publisher cmd_log_pub = nh.advertise<geometry_msgs::TwistStamped>("/data_logger/cmd_vel",1);
@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 	{
 		double cmd = (int(dt/1.5)%2 == 0)?-1:1;
 		geometry_msgs::Twist msg;
-		msg.linear.x = cmd; // 10 degree
+		msg.linear.x = cmd;
 		msg.linear.y = 0;
 		msg.linear.z = 0;
 		msg.angular.x = 0;
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 		// publish message with stamp
 		geometry_msgs::TwistStamped msgStamped;
 		msgStamped.header.stamp = ros::Time::now();
-		msgStamped.twist.linear.x = cmd; // 10 degree
+		msgStamped.twist.linear.x = cmd;
 		msgStamped.twist.linear.y = 0;
 		msgStamped.twist.linear.z = 0;
 		msgStamped.twist.angular.x = 0;
