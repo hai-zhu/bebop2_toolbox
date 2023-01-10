@@ -64,7 +64,7 @@ class BebopNmpcControl:
             bebop_nmpc_casadi_solver(self.mpc_form_param_, True)
 
         # ROS subscriber
-        self.odom_sub_ = rospy.Subscriber("/mav_sim_odom", Odometry, self.set_bebop_odom)  # bebop_odom
+        self.odom_sub_ = rospy.Subscriber("/bebop/odom", Odometry, self.set_bebop_odom)  # bebop_odom
         self.received_first_odom_ = False
         self.odom_received_time_ = rospy.Time.now()
         self.odom_time_out_ = 0.2
@@ -72,12 +72,12 @@ class BebopNmpcControl:
         self.pose_sub_ = rospy.Subscriber("/bebop/pose", PoseStamped, self.set_bebop_pose)
         self.twist_sub_ = rospy.Subscriber("/bebop/twist", TwistStamped, self.set_bebop_twist)
 
-        self.pose_goal_sub_ = rospy.Subscriber("/bebop_pose_goal", PoseStamped, self.set_pose_goal)
+        self.pose_goal_sub_ = rospy.Subscriber("/bebop/pose_goal", PoseStamped, self.set_bebop_pose_goal)
 
         # ROS publisher
         self.bebop_cmd_vel_ = np.array(4)
-        self.bebop_cmd_vel_pub_ = rospy.Publisher("/bebop_auto/cmd_vel", Twist, queue_size=1)
-        self.mpc_traj_plan_vis_pub_ = rospy.Publisher("/mpc/trajectory_plan_vis", Marker, queue_size=1)
+        self.bebop_cmd_vel_pub_ = rospy.Publisher("/bebop/auto_cmd_vel", Twist, queue_size=1)
+        self.mpc_traj_plan_vis_pub_ = rospy.Publisher("/bebop/mpc/trajectory_plan_vis", Marker, queue_size=1)
 
     def set_bebop_odom(self, odom_msg):
         if self.received_first_odom_ is False:
@@ -118,7 +118,7 @@ class BebopNmpcControl:
         vz = twist_msg.twist.linear.z
         self.bebop_state_current_[3:6] = np.array([vx, vy, vz])
 
-    def set_pose_goal(self, pose_goal_msg):
+    def set_bebop_pose_goal(self, pose_goal_msg):
         px_goal = pose_goal_msg.pose.position.x
         py_goal = pose_goal_msg.pose.position.y
         pz_goal = pose_goal_msg.pose.position.z
