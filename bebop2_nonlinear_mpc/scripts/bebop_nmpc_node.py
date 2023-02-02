@@ -27,8 +27,7 @@ class BebopNmpcControl:
 
         # state and goal pose, size
         self.bebop_state_current_ = np.zeros(9)
-        # self.bebop_pose_goal_ = np.array([0, 0, 1.0, 0])
-        self.bebop_pose_goal_ = np.array([2.0, 1.0, 1.0, -np.pi])
+        self.bebop_pose_goal_ = np.array([0, 0, 1.0, 0])
 
         # collision avoidance obs param
         self.nobs_ = self.mpc_form_param_.nobs
@@ -60,8 +59,9 @@ class BebopNmpcControl:
         self.mpc_success_ = False
 
         # MPC solver
+        recompile = False 
         [self.nlp_solver_complied_, self.nlp_lbx_, self.nlp_ubx_, self.nlp_lbg_, self.nlp_ubg_] = \
-            bebop_nmpc_casadi_solver(self.mpc_form_param_, True)
+            bebop_nmpc_casadi_solver(self.mpc_form_param_, recompile)
 
         # ROS subscriber
         self.odom_sub_ = rospy.Subscriber("/bebop/odom", Odometry, self.set_bebop_odom)  # bebop_odom
@@ -73,6 +73,7 @@ class BebopNmpcControl:
         self.twist_sub_ = rospy.Subscriber("/bebop/twist", TwistStamped, self.set_bebop_twist)
 
         self.pose_goal_sub_ = rospy.Subscriber("/bebop/pose_goal", PoseStamped, self.set_bebop_pose_goal)
+        self.received_first_goal_ = False 
 
         # ROS publisher
         self.bebop_cmd_vel_ = np.array(4)
@@ -96,11 +97,13 @@ class BebopNmpcControl:
                                                         odom_msg.pose.pose.orientation.z,
                                                         odom_msg.pose.pose.orientation.w])
         self.bebop_state_current_ = np.array([px, py, pz, vx, vy, vz, rpy[0], rpy[1], rpy[2]])
+        if self.received_first_goal_ is False:  # if not received any goal pose 
+            self.limo_pose_goal_ = np.array([px, py, pz, rpy[2]])
 
     def set_bebop_pose(self, pose_msg):
         if self.received_first_odom_ is False:
             self.received_first_odom_ = True
-            rospy.loginfo('First odometry received!')
+            rospy.loginfo('First pose received!')
         self.odom_received_time_ = rospy.Time.now()
         px = pose_msg.pose.position.x
         py = pose_msg.pose.position.y
@@ -111,6 +114,8 @@ class BebopNmpcControl:
                                                         pose_msg.pose.orientation.w])
         self.bebop_state_current_[0:3] = np.array([px, py, pz])
         self.bebop_state_current_[6:9] = np.array([rpy[0], rpy[1], rpy[2]])
+        if self.received_first_goal_ is False:  # if not received any goal pose 
+            self.limo_pose_goal_ = np.array([px, py, pz, rpy[2]])
 
     def set_bebop_twist(self, twist_msg):
         vx = twist_msg.twist.linear.x
@@ -119,6 +124,9 @@ class BebopNmpcControl:
         self.bebop_state_current_[3:6] = np.array([vx, vy, vz])
 
     def set_bebop_pose_goal(self, pose_goal_msg):
+        if self.received_first_goal_ is False:
+            self.received_first_goal_ = True
+            rospy.loginfo('First pose goal received!')
         px_goal = pose_goal_msg.pose.position.x
         py_goal = pose_goal_msg.pose.position.y
         pz_goal = pose_goal_msg.pose.position.z
@@ -313,6 +321,8 @@ def bebop_nmpc_control():
     while not rospy.is_shutdown():
         if bebop_nmpc.received_first_odom_ is False:
             rospy.logwarn('Waiting for first Odometry!')
+        elif bebop_nmpc.received_first_goal_ is False:
+            rospy.logwarn('Waiting for first goal pose!')
         else:
             bebop_nmpc.calculate_bebop_cmd_vel()
             bebop_nmpc.pub_bebop_cmd_vel()

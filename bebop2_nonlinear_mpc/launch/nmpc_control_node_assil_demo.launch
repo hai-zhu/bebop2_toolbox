@@ -1,0 +1,50 @@
+<launch>
+
+    <arg name="node_start_delay" default="1.0" /> 
+
+    <node   name='bebop_nmpc_control_node_2'
+            pkg='bebop2_nonlinear_mpc'
+            type='bebop_nmpc_node.py'
+            launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "
+            output='screen'>
+
+            <remap from="/bebop/odom" to="/bebop2/odom"/>
+            <remap from="/bebop/pose" to="/vrpn_client_node/bebop2/pose"/>
+            <remap from="/bebop/twist" to="/vrpn_client_node/bebop2/twist"/>
+            <remap from="/bebop/pose_goal" to="/bebop2/pose_goal"/>
+            <remap from="/bebop/mpc/trajectory_plan_vis" to="/bebop2/mpc/trajectory_plan_vis"/>
+            <!-- <remap from="/bebop/auto_cmd_vel" to="/bebop2/auto_cmd_vel"/> -->
+            <remap from="/bebop/auto_cmd_vel" to="/q2/real/cmd_vel"/>
+    </node>
+
+    <node   name='bebop_nmpc_control_node_3'
+            pkg='bebop2_nonlinear_mpc'
+            type='bebop_nmpc_node.py'
+            launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "
+            output='screen'>
+
+            <remap from="/bebop/odom" to="/bebop3/odom"/>
+            <remap from="/bebop/pose" to="/vrpn_client_node/bebop3/pose"/>
+            <remap from="/bebop/twist" to="/vrpn_client_node/bebop3/twist"/>
+            <remap from="/bebop/pose_goal" to="/bebop3/pose_goal"/>
+            <remap from="/bebop/mpc/trajectory_plan_vis" to="/bebop3/mpc/trajectory_plan_vis"/>
+            <!-- <remap from="/bebop/auto_cmd_vel" to="/bebop3/auto_cmd_vel"/> -->
+            <remap from="/bebop/auto_cmd_vel" to="/q3/real/cmd_vel"/>
+    </node>
+
+    <node   name='bebop_nmpc_control_node_4'
+            pkg='bebop2_nonlinear_mpc'
+            type='bebop_nmpc_node.py'
+            launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "
+            output='screen'>
+
+            <remap from="/bebop/odom" to="/bebop4/odom"/>
+            <remap from="/bebop/pose" to="/vrpn_client_node/bebop4/pose"/>
+            <remap from="/bebop/twist" to="/vrpn_client_node/bebop4/twist"/>
+            <remap from="/bebop/pose_goal" to="/bebop4/pose_goal"/>
+            <remap from="/bebop/mpc/trajectory_plan_vis" to="/bebop4/mpc/trajectory_plan_vis"/>
+            <!-- <remap from="/bebop/auto_cmd_vel" to="/bebop4/auto_cmd_vel"/> -->
+            <remap from="/bebop/auto_cmd_vel" to="/q4/real/cmd_vel"/>
+    </node>
+
+</launch>

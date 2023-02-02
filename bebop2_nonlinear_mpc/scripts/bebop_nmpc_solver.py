@@ -31,8 +31,8 @@ class BebopNmpcFormulationParam:
     x_bound = np.array([-5.0, 5.0])
     y_bound = np.array([-2.0, 2.0])
     z_bound = np.array([0.0, 3.0])
-    vx_max = 0.5
-    vy_max = 0.5
+    vx_max = 0.15
+    vy_max = 0.15
     # control bound
     roll_max = np.deg2rad(15.0)
     pitch_max = np.deg2rad(15.0)
@@ -252,4 +252,5 @@ def bebop_nmpc_casadi_solver(mpc_form_param, recompile):
 
 if __name__ == '__main__':
     mpc_form_param = BebopNmpcFormulationParam()
-    bebop_nmpc_casadi_solver(mpc_form_param, True)
+    recompile = True  
+    bebop_nmpc_casadi_solver(mpc_form_param, recompile)

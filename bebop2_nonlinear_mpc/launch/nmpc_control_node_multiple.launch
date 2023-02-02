@@ -1,0 +1,11 @@
+<launch>
+
+    <include file="$(find bebop2_nonlinear_mpc)/launch/nmpc_control_node_1.launch"/>
+
+    <include file="$(find bebop2_nonlinear_mpc)/launch/nmpc_control_node_2.launch"/>
+
+    <include file="$(find bebop2_nonlinear_mpc)/launch/nmpc_control_node_3.launch"/>
+    
+    <include file="$(find bebop2_nonlinear_mpc)/launch/nmpc_control_node_4.launch"/>
+
+</launch>
